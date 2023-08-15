@@ -9,7 +9,6 @@ const router = (0, express_1.Router)();
 router.get('/api/users', usersController_1.default.index);
 router.post('/api/users', usersController_1.default.store);
 router.get('/api/users/:idUser', usersController_1.default.show);
-router.put('/api/users/:idUser', usersController_1.default.update);
 router.delete('/api/users/:idUser', usersController_1.default.destroy);
 exports.default = router;
 //# sourceMappingURL=users.js.map

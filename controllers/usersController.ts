@@ -19,10 +19,19 @@ const show = async (request: Request, response: Response) => {
 
 const store = async (request: Request, response: Response) => {
 
-    const { body } = request
+    const name: string = request.body.name
+    const email: string = request.body.email
+
+    if (!name || name === '') {
+        return response.status(400).json({ error: "Campo nome é obrigatório." });
+    }
+
+    if (!email || email === '') {
+        return response.status(400).json({ error: "Campo de e-mail é obrigatório." });
+    }
 
     try {
-        const existsEmail = await User.findOne({ where: {email: body.email}})
+        const existsEmail = await User.findOne({ where: {email: email}})
 
         if (existsEmail) {
             return response.status(400).json({error: "Já existe um usuário com esse e-mail!"});
@@ -36,20 +45,8 @@ const store = async (request: Request, response: Response) => {
     }
 }
 
-const update = (request: Request, response: Response) => {
-
-    const { id } = request.params;
-    const { body } = request;
-
-
-    response.json({
-        msg: "update USER",
-        body
-    })
-}
-
 const destroy = async (request: Request, response: Response) => {
-    const { idUser } = request.params;
+    const idUser: string = request.params.idUser;
 
     try {
         const user = await User.findByPk(idUser);
@@ -70,6 +67,5 @@ export default {
     index,
     store,
     show,
-    update,
     destroy
 }

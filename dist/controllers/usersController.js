@@ -26,9 +26,16 @@ const show = (request, response) => __awaiter(void 0, void 0, void 0, function* 
     return response.status(200).json(user);
 });
 const store = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const { body } = request;
+    const name = request.body.name;
+    const email = request.body.email;
+    if (!name || name === '') {
+        return response.status(400).json({ error: "Campo nome é obrigatório." });
+    }
+    if (!email || email === '') {
+        return response.status(400).json({ error: "Campo de e-mail é obrigatório." });
+    }
     try {
-        const existsEmail = yield user_1.default.findOne({ where: { email: body.email } });
+        const existsEmail = yield user_1.default.findOne({ where: { email: email } });
         if (existsEmail) {
             return response.status(400).json({ error: "Já existe um usuário com esse e-mail!" });
         }
@@ -39,16 +46,8 @@ const store = (request, response) => __awaiter(void 0, void 0, void 0, function*
         return response.status(500).json({ error: "Erro ao cadastrar um novo usuário" });
     }
 });
-const update = (request, response) => {
-    const { id } = request.params;
-    const { body } = request;
-    response.json({
-        msg: "update USER",
-        body
-    });
-};
 const destroy = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const { idUser } = request.params;
+    const idUser = request.params.idUser;
     try {
         const user = yield user_1.default.findByPk(idUser);
         if (!user) {
@@ -64,7 +63,6 @@ exports.default = {
     index,
     store,
     show,
-    update,
     destroy
 };
 //# sourceMappingURL=usersController.js.map
